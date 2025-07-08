@@ -2,10 +2,7 @@ version: '3.8'
 
 services:
   live-dl:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: https://ghcr.io/nijinogg/live-dl.git
+    image: ghcr.io/nijinogg/live-dl:latest
     container_name: live-dl
     environment:
       - TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID}
