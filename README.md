@@ -1,2 +1,3 @@
-"# live-dl" 
-Monitor and download live streams from YouTube
+# live-dl
+
+Monitor and download live streams from YouTube and Twitch
