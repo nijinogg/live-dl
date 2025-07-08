@@ -34,6 +34,8 @@ QUALITY = 'best'
 COOKIES_FILE = '/app/cookies.txt'
 MAX_CONCURRENT_DOWNLOADS = 4  # Limit concurrent downloads
 HLS_LIVE_EDGE = 5  # Custom HLS live edge value for Streamlink
+RETRY_STREAMS = 30  # Custom Retry Streams value for Streamlink
+RETRY_MAX = 3  # Custom Retry Max value for Streamlink
 
 # Ensure output directory exists
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -118,7 +120,7 @@ def download_twitch_stream(channel):
     try:
         logging.info(f"Starting download for Twitch channel {channel} to {output_file}")
         process = subprocess.run(
-            ['streamlink', '--twitch-disable-ads', f'twitch.tv/{channel}', QUALITY, '-o', output_file, '--hls-live-edge', str(HLS_LIVE_EDGE)],
+            ['streamlink', '--twitch-disable-ads', f'twitch.tv/{channel}', QUALITY, '-o', output_file, '--hls-live-edge', str(HLS_LIVE_EDGE), '--retry-streams', str(RETRY_STREAMS), '--retry-max', str(RETRY_MAX)],
             capture_output=True, text=True
         )
         if process.returncode == 0:
@@ -138,7 +140,7 @@ def download_youtube_stream(channel, live_url):
     try:
         logging.info(f"Starting download for YouTube channel {channel} to {output_file}")
         process = subprocess.run(
-            ['streamlink', live_url, QUALITY, '-o', output_file, '--http-cookie', f'cookies.txt=/app/cookies.txt', '--hls-live-edge', str(HLS_LIVE_EDGE)],
+            ['streamlink', live_url, QUALITY, '-o', output_file, '--http-cookie', f'cookies.txt=/app/cookies.txt', '--hls-live-edge', str(HLS_LIVE_EDGE), '--retry-streams', str(RETRY_STREAMS), '--retry-max', str(RETRY_MAX)],
             capture_output=True, text=True
         )
         if process.returncode == 0:
