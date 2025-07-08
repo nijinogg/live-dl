@@ -33,6 +33,7 @@ OUTPUT_DIR = '/app/downloads'
 QUALITY = 'best'
 COOKIES_FILE = '/app/cookies.txt'
 MAX_CONCURRENT_DOWNLOADS = 4  # Limit concurrent downloads
+HLS_LIVE_EDGE = 5  # Custom HLS live edge value for Streamlink
 
 # Ensure output directory exists
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -110,14 +111,14 @@ def get_youtube_live_url(channel):
         return None
 
 def download_twitch_stream(channel):
-    """Download Twitch stream using Streamlink."""
+    """Download Twitch stream using Streamlink with custom HLS live edge."""
     timestamp = datetime.now(HKT).strftime('%Y%m%d%H%M%S')
     output_file = os.path.join(OUTPUT_DIR, f'twitch_{channel}_{timestamp}.ts')
     
     try:
         logging.info(f"Starting download for Twitch channel {channel} to {output_file}")
         process = subprocess.run(
-            ['streamlink', '--twitch-disable-ads', f'twitch.tv/{channel}', QUALITY, '-o', output_file],
+            ['streamlink', '--twitch-disable-ads', f'twitch.tv/{channel}', QUALITY, '-o', output_file, '--hls-live-edge', str(HLS_LIVE_EDGE)],
             capture_output=True, text=True
         )
         if process.returncode == 0:
@@ -130,14 +131,14 @@ def download_twitch_stream(channel):
         active_downloads.discard(f"twitch_{channel}")
 
 def download_youtube_stream(channel, live_url):
-    """Download YouTube stream using Streamlink with the extracted URL and cookies."""
+    """Download YouTube stream using Streamlink with the extracted URL, cookies, and custom HLS live edge."""
     timestamp = datetime.now(HKT).strftime('%Y%m%d_%H%M%S')
     output_file = os.path.join(OUTPUT_DIR, f'youtube_{channel.replace('@', '')}_{timestamp}.ts')
     
     try:
         logging.info(f"Starting download for YouTube channel {channel} to {output_file}")
         process = subprocess.run(
-            ['streamlink', live_url, QUALITY, '-o', output_file, '--http-cookie', f'cookies.txt=/app/cookies.txt'],
+            ['streamlink', live_url, QUALITY, '-o', output_file, '--http-cookie', f'cookies.txt=/app/cookies.txt', '--hls-live-edge', str(HLS_LIVE_EDGE)],
             capture_output=True, text=True
         )
         if process.returncode == 0:
