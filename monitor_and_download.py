@@ -111,7 +111,7 @@ def get_youtube_live_url(channel):
 
 def download_twitch_stream(channel):
     """Download Twitch stream using Streamlink."""
-    timestamp = datetime.now(HKT).strftime('%Y%m%d_%H%M%S')
+    timestamp = datetime.now(HKT).strftime('%Y%m%d%H%M%S')
     output_file = os.path.join(OUTPUT_DIR, f'twitch_{channel}_{timestamp}.ts')
     
     try:
@@ -137,7 +137,7 @@ def download_youtube_stream(channel, live_url):
     try:
         logging.info(f"Starting download for YouTube channel {channel} to {output_file}")
         process = subprocess.run(
-            ['streamlink', '--http-cookies', f'cookies.txt=/app/cookies.txt', live_url, QUALITY, '-o', output_file],
+            ['streamlink', live_url, QUALITY, '-o', output_file, '--http-cookie', f'cookies.txt=/app/cookies.txt'],
             capture_output=True, text=True
         )
         if process.returncode == 0:
