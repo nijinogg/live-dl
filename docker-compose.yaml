@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  live-dl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: https://ghcr.io/nijinogg/live-dl.git
+    container_name: live-dl
+    environment:
+      - TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID}
+      - TWITCH_CLIENT_SECRET=${TWITCH_CLIENT_SECRET}
+    volumes:
+      - ./downloads:/app/downloads
+      - ./cookies.txt:/app/cookies.txt:ro
+    restart: unless-stopped
