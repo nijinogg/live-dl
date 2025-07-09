@@ -10,12 +10,15 @@ RUN apk add --no-cache \
     ca-certificates \
     libffi \
     openssl \
+    musl-dev \
+    libc-dev \
+    gcc \
     && apk add --no-cache --virtual .build-deps \
     build-base \
     python3-dev \
     libffi-dev \
     openssl-dev \
-    && pip3 install --no-cache-dir --break-system-packages \
+    && pip3 install --no-cache-dir --break-system-packages --verbose \
     streamlink \
     ytarchive \
     yt-dlp \
