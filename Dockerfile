@@ -1,30 +1,26 @@
 # Use Alpine Linux as the base image for minimal size
 FROM alpine:3.20
 
-# Install necessary packages: Python, pip, ffmpeg, curl, and additional dependencies for ytarchive and yt-dlp
+# Install necessary packages: Python, pip, ffmpeg, curl, and dependencies for Streamlink and yt-dlp
 RUN apk add --no-cache \
     python3 \
     py3-pip \
     ffmpeg \
     curl \
     ca-certificates \
-    libffi \
-    openssl \
-    musl-dev \
-    libc-dev \
-    gcc \
     && apk add --no-cache --virtual .build-deps \
     build-base \
     python3-dev \
-    libffi-dev \
-    openssl-dev \
-    && pip3 install --no-cache-dir --break-system-packages --verbose \
+    && pip3 install --no-cache-dir --break-system-packages \
     streamlink \
-    ytarchive \
     yt-dlp \
     requests \
     && apk del .build-deps \
     && rm -rf /root/.cache
+
+# Install ytarchive binary from GitHub releases (version v0.5.0)
+RUN curl -L https://github.com/Kethsar/ytarchive/releases/download/v0.5.0/ytarchive_linux_amd64 -o /app/ytarchive \
+    && chmod +x /app/ytarchive
 
 # Set the working directory
 WORKDIR /app
