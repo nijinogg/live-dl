@@ -1,7 +1,7 @@
 # Use Alpine Linux as the base image for minimal size
 FROM alpine:3.20
 
-# Install necessary packages: Python, pip, ffmpeg, curl, and dependencies for Streamlink and yt-dlp
+# Install necessary packages: Python, pip, ffmpeg, curl, and dependencies for Streamlink and ytarchive
 RUN apk add --no-cache \
     python3 \
     py3-pip \
@@ -14,7 +14,7 @@ RUN apk add --no-cache \
     && pip3 install --no-cache-dir --break-system-packages \
     streamlink \
     yt-dlp \
-	ytarchive \
+    ytarchive \
     requests \
     && apk del .build-deps \
     && rm -rf /root/.cache
