@@ -14,6 +14,7 @@ RUN apk add --no-cache \
     && pip3 install --no-cache-dir --break-system-packages \
     streamlink \
     yt-dlp \
+	ytarchive \
     requests \
     && apk del .build-deps \
     && rm -rf /root/.cache
