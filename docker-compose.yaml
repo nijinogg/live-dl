@@ -7,8 +7,8 @@ services:
     environment:
       - TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID}
       - TWITCH_CLIENT_SECRET=${TWITCH_CLIENT_SECRET}
-      - YOUTUBE_DOWNLOADER=ytarchive   # ytarchive or yt-dlp
     volumes:
       - ./downloads:/app/downloads
       - ./cookies.txt:/app/cookies.txt:ro
+      - ./monitor_and_download.py:/app/monitor_and_download.py
     restart: unless-stopped
